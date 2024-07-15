@@ -1,5 +1,5 @@
 ---
-title: 2018-Multi-University-Training-Contest-8
+title: 2018 Multi-University Training Contest 8
 category_bar: true
 mathjax: true
 date: 2018-08-16 21:10:00
