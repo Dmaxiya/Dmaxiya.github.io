@@ -191,3 +191,76 @@ int main() {
 }
 ```
 
+## B. [Rikka with Stone-Paper-Scissors](https://acm.hdu.edu.cn/showproblem.php?pid=6418)
+
+### 题意
+
+> Yuta 与 Rikka 用打牌的方式玩剪刀石头布，三种牌分别为“是石头”、“剪刀”、“布”，Yuta 最开始有 $a$ 张剪刀、$b$ 张石头、$c$ 张布，Rikka 最开始有  $a'$ 张剪刀、$b'$ 张石头、$c'$ 张布。之前出过的牌后面不能再出，已知 Yuta 随机出牌，Rikka 按最优策略出牌，且后续会根据之前 Yuta 已出过的牌调整出牌策略。Rikka 赢一局加一分，输一局扣一分，平局不得分，问 Rikka 最终得分的期望是多少。
+
+### 输入
+
+> 第一行为一个整数 $T\ (1\leq T\leq10^4)$，接下去有 $T$ 组数据，每组输入为 $6$ 个整数 $a,b,c,a',b',c'\ (0\leq a,b,c,a',b',c'\leq10^9,a+b+c=a'+b'+c'>0)$。
+
+### 输出
+
+> 对于每组输入，以分数形式输出 Rikka 的期望得分。
+
+### 题解
+
+> 不论后续 Rikka 如何采用最优策略，只要 Yuta 出的第一张牌是完全随机的，那 Rikka 后续的最优策略也将得到随机的结果，因此相当于 Rikka 也是随机出牌，计算得分期望为：
+> $$
+> \frac{a'\times(c-b)+b'\times(a-c)+c'\times(b-a)}{a+b+c}
+> $$
+> 
+
+### 过题代码
+
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long LL;
+const int maxn = 10 + 100;
+int T;
+LL fenzi, fenmu;
+LL a[maxn], b[maxn];
+
+int main() {
+    ios::sync_with_stdio(false);
+
+    cin >> T;
+    while (T--) {
+        fenmu = 0;
+        for (int i = 0; i < 3; ++i) {
+            cin >> a[i];
+            fenmu += a[i];
+        }
+        for (int i = 0; i < 3; ++i) {
+            cin >> b[i];
+        }
+        fenzi = 0;
+        for (int i = 0; i < 3; ++i) {
+            fenzi += b[i] * (a[(i + 2) % 3] - a[(i + 1) % 3]);
+        }
+        LL g = __gcd(fenzi, fenmu);
+        fenzi /= g;
+        fenmu /= g;
+        if (fenzi == 0) {
+            cout << 0 << endl;
+            continue;
+        }
+        if (fenmu < 0) {
+            fenmu = -fenmu;
+            fenzi = -fenzi;
+        }
+        if (fenmu == 1) {
+            cout << fenzi << endl;
+            continue;
+        }
+        cout << fenzi << "/" << fenmu << endl;
+    }
+
+    return 0;
+}
+```
+
